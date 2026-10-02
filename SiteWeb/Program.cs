@@ -1,7 +1,23 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SiteWeb.Application.Mappings;
+using SiteWeb.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// ✅ Enregistrer le DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ✅ Référencer le projet Infrastructure dans SiteWeb.csproj aussi
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
 
