@@ -1,0 +1,172 @@
+@model ProductListViewModel
+@{
+    ViewData["Title"] = "Catalogue Produits d'Emballage";
+}
+
+<div class="bg-light py-4 border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted"><i class="bi bi-house-door me-1"></i>Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Catalogue Produits</li>
+            </ol>
+        </nav>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h1 class="fw-bold mb-1">Catalogue Général des Produits</h1>
+                <p class="text-muted mb-0">Consultez nos références professionnelles d'emballage, de calage et de conditionnement.</p>
+            </div>
+            <div>
+                <span class="badge bg-white text-dark border p-2 px-3 rounded-pill shadow-sm">
+                    <strong class="text-primary">@Model.TotalCount</strong> produit(s) trouvé(s)
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Filter and Search Bar -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
+        <form method="get" asp-controller="Products" asp-action="Index" class="row g-3 align-items-center">
+            <div class="col-lg-5 col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="search" value="@Model.SearchTerm" class="form-control border-start-0 bg-light" placeholder="Rechercher par nom, référence (ex: FLM, ADH)..." />
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3">
+                <select name="categoryId" class="form-select bg-light">
+                    <option value="">Toutes les catégories</option>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        if (Model.SelectedCategoryId == cat.Id)
+                        {
+                            <option value="@cat.Id" selected>@cat.Name (@cat.ProductCount)</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.Id">@cat.Name (@cat.ProductCount)</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-2 col-md-3">
+                <select name="sort" class="form-select bg-light">
+                    @if (string.IsNullOrEmpty(Model.SortBy))
+                    {
+                        <option value="" selected>Tri par défaut</option>
+                    }
+                    else
+                    {
+                        <option value="">Tri par défaut</option>
+                    }
+                    @if (Model.SortBy == "name_asc")
+                    {
+                        <option value="name_asc" selected>Nom (A-Z)</option>
+                    }
+                    else
+                    {
+                        <option value="name_asc">Nom (A-Z)</option>
+                    }
+                    @if (Model.SortBy == "name_desc")
+                    {
+                        <option value="name_desc" selected>Nom (Z-A)</option>
+                    }
+                    else
+                    {
+                        <option value="name_desc">Nom (Z-A)</option>
+                    }
+                    @if (Model.SortBy == "date_desc")
+                    {
+                        <option value="date_desc" selected>Nouveautés</option>
+                    }
+                    else
+                    {
+                        <option value="date_desc">Nouveautés</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-2 col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-semco-primary w-100">
+                    <i class="bi bi-funnel me-1"></i> Filtrer
+                </button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm) || Model.SelectedCategoryId.HasValue || !string.IsNullOrEmpty(Model.SortBy))
+                {
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary" title="Réinitialiser les filtres">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Category Pills Quick Bar -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a asp-controller="Products" asp-action="Index" class="btn btn-sm @(!Model.SelectedCategoryId.HasValue ? "btn-dark" : "btn-outline-secondary") rounded-pill px-3">
+            Tous les produits
+        </a>
+        @foreach (var cat in Model.Categories)
+        {
+            <a asp-controller="Products" asp-action="Category" asp-route-slug="@cat.Slug" class="btn btn-sm @(Model.SelectedCategoryId == cat.Id ? "btn-semco-primary" : "btn-outline-secondary") rounded-pill px-3">
+                @cat.Name (@cat.ProductCount)
+            </a>
+        }
+    </div>
+
+    <!-- Products Grid -->
+    @if (Model.Products.Count == 0)
+    {
+        <div class="text-center py-5 my-4 bg-white rounded-4 border p-5">
+            <i class="bi bi-box-seam text-muted" style="font-size: 3.5rem;"></i>
+            <h3 class="fw-bold mt-3">Aucun produit ne correspond à votre recherche</h3>
+            <p class="text-muted">Essayez de modifier vos mots-clés ou sélectionnez une autre catégorie d'emballage.</p>
+            <a asp-controller="Products" asp-action="Index" class="btn btn-semco-primary mt-2">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Réinitialiser la recherche
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var prod in Model.Products)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-card-img-wrapper">
+                            @if (prod.IsFeatured)
+                            {
+                                <span class="position-absolute top-0 start-0 m-3 badge-featured">
+                                    <i class="bi bi-star-fill me-1"></i> Populaire
+                                </span>
+                            }
+                            <img src="@(string.IsNullOrEmpty(prod.ImageUrl) ? "/images/film-etirable.png" : prod.ImageUrl)" alt="@prod.Name" loading="lazy" />
+                        </div>
+                        <div class="product-card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="product-ref">@prod.Reference</span>
+                                <a asp-controller="Products" asp-action="Category" asp-route-slug="@prod.CategorySlug" class="badge-category text-decoration-none">
+                                    @prod.CategoryName
+                                </a>
+                            </div>
+                            <h2 class="product-card-title">@prod.Name</h2>
+                            <p class="product-card-desc">@prod.ShortDescription</p>
+                            @if (!string.IsNullOrEmpty(prod.Dimensions))
+                            {
+                                <div class="small text-muted mb-3">
+                                    <i class="bi bi-aspect-ratio text-primary me-1"></i> @prod.Dimensions
+                                </div>
+                            }
+                            <a asp-controller="Products" asp-action="Details" asp-route-slug="@prod.Slug" class="btn btn-semco-primary w-100 mt-auto">
+                                <i class="bi bi-eye me-1"></i> Voir le produit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

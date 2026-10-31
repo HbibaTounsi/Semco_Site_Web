@@ -1,0 +1,264 @@
+@using SiteWeb.Models
+@model ContactPageViewModel
+@{
+    ViewData["Title"] = "Contact & Devis — SEMCO";
+    bool hasPrefill = !string.IsNullOrEmpty(Model.PreFilledProductName);
+}
+
+<!-- Breadcrumb -->
+<div class="bg-white py-3 border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">
+                        <i class="bi bi-house-door me-1"></i>Accueil
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Contact & Devis</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- En-tête page -->
+<div class="py-4 border-bottom" style="background:linear-gradient(135deg,#eef3fb,#fff)">
+    <div class="container">
+        <span class="section-tag"><i class="bi bi-envelope me-1"></i> Contactez-nous</span>
+        <h1 class="fw-bold mb-1 mt-2">Contact & Demande de devis</h1>
+        <p class="text-muted mb-0">Notre équipe vous répond sous 24h, du lundi au vendredi de 08h à 18h.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    @if (Model.IsSuccess)
+    {
+        <!-- Message succès -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="alert-success-semco">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size:3.5rem;"></i>
+                    <h2 class="fw-bold mt-3 mb-2">Message envoyé avec succès !</h2>
+                    <p class="text-muted mb-4">@Model.SuccessMessage</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-semco-primary">
+                            <i class="bi bi-grid me-2"></i> Retour aux produits
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-semco-outline">
+                            <i class="bi bi-house me-2"></i> Accueil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-5">
+
+            <!-- Formulaire -->
+            <div class="col-lg-8">
+
+                @if (hasPrefill)
+                {
+                    <div class="alert alert-info d-flex align-items-start gap-3 rounded-3 mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill fs-5 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Demande de devis pour :</strong> @Model.PreFilledProductName
+                            @if (!string.IsNullOrEmpty(Model.PreFilledProductReference))
+                            {
+                                <span class="ms-2 badge bg-light text-dark border font-monospace">Réf : @Model.PreFilledProductReference</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="bg-white rounded-4 shadow-sm border p-4 p-md-5">
+                    <h3 class="fw-bold mb-1">Envoyez-nous votre message</h3>
+                    <p class="text-muted mb-4">Tous les champs marqués <span class="text-danger">*</span> sont obligatoires.</p>
+
+                    <form asp-action="Index" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <!-- Champs cachés pré-remplis -->
+                        <input type="hidden" asp-for="Form.ProductReference" />
+                        <input type="hidden" asp-for="Form.ProductName" />
+
+                        <div class="row g-3">
+
+                            <!-- Nom -->
+                            <div class="col-md-6">
+                                <label asp-for="Form.FullName" class="form-label fw-semibold">
+                                    <i class="bi bi-person me-1 text-primary"></i> Nom complet <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Form.FullName" class="form-control" placeholder="Jean Dupont" autocomplete="name" />
+                                <span asp-validation-for="Form.FullName" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label asp-for="Form.Email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-1 text-primary"></i> Adresse email <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Form.Email" class="form-control" placeholder="jean.dupont@entreprise.fr" autocomplete="email" />
+                                <span asp-validation-for="Form.Email" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Téléphone -->
+                            <div class="col-md-6">
+                                <label asp-for="Form.PhoneNumber" class="form-label fw-semibold">
+                                    <i class="bi bi-telephone me-1 text-primary"></i> Téléphone
+                                </label>
+                                <input asp-for="Form.PhoneNumber" class="form-control" placeholder="+33 1 23 45 67 89" autocomplete="tel" />
+                                <span asp-validation-for="Form.PhoneNumber" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Société -->
+                            <div class="col-md-6">
+                                <label asp-for="Form.CompanyName" class="form-label fw-semibold">
+                                    <i class="bi bi-building me-1 text-primary"></i> Société / Entreprise
+                                </label>
+                                <input asp-for="Form.CompanyName" class="form-control" placeholder="Ma Société SAS" autocomplete="organization" />
+                                <span asp-validation-for="Form.CompanyName" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Sujet -->
+                            <div class="col-12">
+                                <label asp-for="Form.Subject" class="form-label fw-semibold">
+                                    <i class="bi bi-chat-quote me-1 text-primary"></i> Sujet <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Form.Subject" class="form-control" placeholder="Ex : Demande de devis film étirable 23 µm" />
+                                <span asp-validation-for="Form.Subject" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="col-12">
+                                <label asp-for="Form.Message" class="form-label fw-semibold">
+                                    <i class="bi bi-pencil-square me-1 text-primary"></i> Message <span class="text-danger">*</span>
+                                </label>
+                                <textarea asp-for="Form.Message" class="form-control" rows="6"
+                                          placeholder="Décrivez votre besoin : quantités souhaitées, format, fréquence de commande, délai souhaité..."></textarea>
+                                <span asp-validation-for="Form.Message" class="invalid-feedback d-block text-danger small"></span>
+                            </div>
+
+                            <!-- Validation globale -->
+                            <div class="col-12">
+                                @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+                                {
+                                    <div class="alert alert-danger rounded-3">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        @ViewData.ModelState[string.Empty]!.Errors.FirstOrDefault()?.ErrorMessage
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Bouton envoi -->
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-semco-orange btn-lg w-100">
+                                    <i class="bi bi-send-fill me-2"></i> Envoyer le message
+                                </button>
+                                <p class="text-muted small text-center mt-2 mb-0">
+                                    <i class="bi bi-lock-fill me-1"></i>
+                                    Vos données sont confidentielles et ne seront jamais transmises à des tiers.
+                                </p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Carte coordonnées -->
+            <div class="col-lg-4">
+                <div class="contact-info-card mb-4">
+                    <h4 class="mb-4"><i class="bi bi-geo-alt-fill me-2 text-warning"></i>Nos coordonnées</h4>
+
+                    <ul class="list-unstyled d-flex flex-column gap-4 mb-4">
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-telephone-fill text-warning fs-5 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <div class="small text-white-50 mb-1">Téléphone</div>
+                                <a href="tel:+33123456789" class="fw-semibold text-white fs-6">+33 1 23 45 67 89</a>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-envelope-fill text-warning fs-5 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <div class="small text-white-50 mb-1">Email</div>
+                                <a href="mailto:contact@semco-emballage.fr" class="fw-semibold text-white" style="word-break:break-all;">contact@semco-emballage.fr</a>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-geo-alt-fill text-warning fs-5 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <div class="small text-white-50 mb-1">Adresse</div>
+                                <span class="text-white">Zone Industrielle de l'Emballage<br />75000 Paris, France</span>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-clock-fill text-warning fs-5 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <div class="small text-white-50 mb-1">Horaires</div>
+                                <span class="text-white">Lun – Ven : 08h00 – 18h00</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <a href="https://wa.me/33123456789" target="_blank" class="btn btn-whatsapp w-100 btn-lg">
+                        <i class="bi bi-whatsapp me-2"></i> Contacter sur WhatsApp
+                    </a>
+                </div>
+
+                <!-- Délai de réponse -->
+                <div class="bg-white rounded-3 border p-4 text-center">
+                    <i class="bi bi-lightning-charge-fill text-warning fs-2"></i>
+                    <h5 class="fw-bold mt-2 mb-1">Réponse rapide garantie</h5>
+                    <p class="text-muted small mb-0">Nous vous répondons sous <strong>24h ouvrées</strong>.<br />Pour les urgences, contactez-nous par WhatsApp.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pourquoi nous contacter -->
+        <div class="mt-5 pt-4 border-top">
+            <div class="text-center mb-4">
+                <span class="section-tag"><i class="bi bi-question-circle me-1"></i> Pourquoi nous contacter ?</span>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon-wrapper feature-icon-blue mx-auto">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Devis sous 24h</h5>
+                        <p class="text-muted small mb-0">Obtenez une offre commerciale personnalisée avec tarifs dégressifs selon vos volumes.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon-wrapper feature-icon-orange mx-auto">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Expertise technique</h5>
+                        <p class="text-muted small mb-0">Nos conseillers vous recommandent la solution exacte pour votre activité et vos contraintes.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon-wrapper feature-icon-green mx-auto">
+                            <i class="bi bi-stars"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Sur-mesure possible</h5>
+                        <p class="text-muted small mb-0">Fabrications spéciales, impressions personnalisées et dimensions atypiques sur demande.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

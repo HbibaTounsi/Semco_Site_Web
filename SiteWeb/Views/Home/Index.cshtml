@@ -1,8 +1,240 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Solutions d'Emballage & Matériel Professionnel";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="section-tag"><i class="bi bi-box-seam me-1"></i> Fabricant & Revendeur Spécialisé</span>
+                <h1 class="hero-title mt-2">
+                    Des solutions d'emballage <span class="highlight-blue">adaptées</span> à vos <span class="highlight-orange">besoins professionnels</span>
+                </h1>
+                <p class="hero-subtitle">
+                    <strong>SEMCO (Service Emballage Confort)</strong> vous propose une sélection rigoureuse de films étirables, rubans adhésifs techniques, étiquettes logistiques, sacs et machines d'emballage pour optimiser et sécuriser l'ensemble de votre chaîne logistique.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-semco-primary btn-lg">
+                        <i class="bi bi-grid-fill me-2"></i> Découvrir nos produits
+                    </a>
+                    <a asp-controller="Contact" asp-action="Index" class="btn btn-semco-orange btn-lg">
+                        <i class="bi bi-envelope-check me-2"></i> Demander un devis
+                    </a>
+                    <a href="https://wa.me/33123456789" target="_blank" class="btn btn-whatsapp btn-lg">
+                        <i class="bi bi-whatsapp"></i> WhatsApp direct
+                    </a>
+                </div>
+
+                <!-- Trust indicators -->
+                <div class="row mt-4 pt-3 border-top g-3">
+                    <div class="col-4">
+                        <div class="fw-bold fs-4 text-primary">@Model.Categories.Count</div>
+                        <div class="small text-muted">Grandes Catégories</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="fw-bold fs-4 text-warning">@Model.TotalProductsCount+</div>
+                        <div class="small text-muted">Références Pro</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="fw-bold fs-4 text-success">24/48h</div>
+                        <div class="small text-muted">Disponibilité Stock</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-wrapper p-3">
+                    <img src="~/images/film-etirable.png" alt="Solutions d'emballage professionnelles SEMCO" class="img-fluid shadow-lg" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values / Advantages Bar -->
+<section class="py-5 bg-white border-bottom">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-blue">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Qualité Industrielle</h4>
+                    <p class="text-muted mb-0">Tous nos films, rubans adhésifs et sacs répondent aux normes les plus exigeantes de résistance mécanique et de protection.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-green">
+                        <i class="bi bi-recycle"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Engagement Éco-Responsable</h4>
+                    <p class="text-muted mb-0">Large choix de films allégés haute performance, papiers kraft recyclables et solutions d'emballages biodégradables.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-orange">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Conseil & Réactivité Commerciale</h4>
+                    <p class="text-muted mb-0">Nos experts analysent vos cadences et vous conseillent le matériel et le consommable parfaitement dimensionné.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <span class="section-tag"><i class="bi bi-collection-fill me-1"></i> Notre Catalogue</span>
+            <h2 class="section-title">Nos Catégories Principales</h2>
+            <p class="section-desc">Explorez nos différentes gammes d'emballage adaptées au conditionnement, à la palettisation et à l'expédition sécurisée de vos marchandises.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            @foreach (var cat in Model.Categories)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="category-card">
+                        <div class="category-card-img-wrapper">
+                            <img src="@(string.IsNullOrEmpty(cat.ImageUrl) ? "/images/etiquette.png" : cat.ImageUrl)" alt="@cat.Name" loading="lazy" />
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fs-4 fw-bold text-dark mb-0">@cat.Name</h3>
+                                <span class="badge-category"><i class="bi bi-box me-1"></i> @cat.ProductCount réf.</span>
+                            </div>
+                            <p class="text-muted small flex-grow-1 mb-4">
+                                @cat.Description
+                            </p>
+                            <a asp-controller="Products" asp-action="Category" asp-route-slug="@cat.Slug" class="btn btn-semco-outline w-100">
+                                <i class="bi bi-arrow-right-circle me-1"></i> Voir les produits
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+            <div>
+                <span class="section-tag"><i class="bi bi-star-fill me-1"></i> Sélection Pro</span>
+                <h2 class="section-title mb-1">Produits Populaires & Recommandés</h2>
+                <p class="text-muted mb-0">Les solutions les plus demandées par nos clients logistiques et industriels.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-semco-primary">
+                    <i class="bi bi-view-list me-1"></i> Voir tout le catalogue
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var prod in Model.FeaturedProducts)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-card-img-wrapper">
+                            <span class="position-absolute top-0 start-0 m-3 badge-featured">
+                                <i class="bi bi-star-fill me-1"></i> Populaire
+                            </span>
+                            <img src="@(string.IsNullOrEmpty(prod.ImageUrl) ? "/images/film-etirable.png" : prod.ImageUrl)" alt="@prod.Name" loading="lazy" />
+                        </div>
+                        <div class="product-card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="product-ref">@prod.Reference</span>
+                                <span class="badge-category">@prod.CategoryName</span>
+                            </div>
+                            <h3 class="product-card-title">@prod.Name</h3>
+                            <p class="product-card-desc">@prod.ShortDescription</p>
+                            @if (!string.IsNullOrEmpty(prod.Dimensions))
+                            {
+                                <div class="small text-muted mb-3">
+                                    <i class="bi bi-aspect-ratio text-primary me-1"></i> @prod.Dimensions
+                                </div>
+                            }
+                            <a asp-controller="Products" asp-action="Details" asp-route-slug="@prod.Slug" class="btn btn-semco-primary w-100 mt-auto">
+                                <i class="bi bi-eye me-1"></i> Voir le produit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- About Preview Section -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="p-4 p-md-5 rounded-4 bg-white border shadow-sm">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="~/images/logo-semco.jpg" alt="SEMCO" style="height: 48px;" onerror="this.src='/images/logo.svg'" />
+                        <div>
+                            <h4 class="mb-0 fw-bold">Service Emballage Confort</h4>
+                            <small class="text-primary fw-semibold">Partenaire B2B de référence</small>
+                        </div>
+                    </div>
+                    <p class="text-muted">
+                        Forte de son expertise dans le secteur de l'emballage et de la logistique, la société <strong>SEMCO</strong> accompagne les professionnels, industriels, plateformes e-commerce et artisans dans le choix optimal de leurs consommables et machines.
+                    </p>
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-dark mb-4">
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Produits testés et certifiés conformes aux cadences intensives</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Stock tampon garanti pour approvisionnement sans rupture</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Tarification dégressive pour commandes en volume</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Personnalisation sur mesure (scotch imprimé, étiquettes, sacs)</li>
+                    </ul>
+                    <a asp-controller="About" asp-action="Index" class="btn btn-semco-outline">
+                        <i class="bi bi-info-circle me-1"></i> En savoir plus sur la société
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="p-4 p-md-5 rounded-4 bg-gradient text-white" style="background: linear-gradient(135deg, var(--semco-darker) 0%, #0f172a 100%);">
+                    <span class="badge bg-warning text-dark fw-bold mb-3"><i class="bi bi-lightning-charge-fill me-1"></i> Prise en charge rapide</span>
+                    <h3 class="fw-bold mb-3 text-white">Besoin d'un conseil ou d'une cotation tarifaire ?</h3>
+                    <p class="text-secondary mb-4">
+                        Nos conseillers techniques sont à votre entière disposition pour étudier vos cahiers des charges et vous fournir une offre adaptée sous 24 heures.
+                    </p>
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="feature-icon-wrapper feature-icon-orange mb-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                                <i class="bi bi-telephone-fill"></i>
+                            </div>
+                            <div>
+                                <small class="text-secondary d-block">Ligne directe commerciale</small>
+                                <a href="tel:+33123456789" class="text-white fw-bold text-decoration-none fs-5">+33 1 23 45 67 89</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="feature-icon-wrapper feature-icon-blue mb-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div>
+                                <small class="text-secondary d-block">Email de contact</small>
+                                <a href="mailto:contact@semco-emballage.fr" class="text-white fw-bold text-decoration-none">contact@semco-emballage.fr</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-controller="Contact" asp-action="Index" class="btn btn-semco-orange w-100">
+                        <i class="bi bi-send-fill me-1"></i> Accéder au formulaire de contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

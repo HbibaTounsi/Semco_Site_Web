@@ -1,0 +1,256 @@
+@{
+    ViewData["Title"] = "À propos de SEMCO";
+    int totalCategories = ViewBag.TotalCategories ?? 0;
+    int totalProducts   = ViewBag.TotalProducts ?? 0;
+}
+
+<!-- Breadcrumb -->
+<div class="bg-white py-3 border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">
+                        <i class="bi bi-house-door me-1"></i>Accueil
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">À propos</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Hero À propos -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="section-tag"><i class="bi bi-building me-1"></i> Qui sommes-nous ?</span>
+                <h1 class="hero-title mt-3">
+                    À propos de <span class="highlight-blue">SEMCO</span>
+                </h1>
+                <p class="hero-subtitle">
+                    <strong>SEMCO – Service Emballage Confort</strong> est votre partenaire de confiance
+                    pour la fourniture industrielle de solutions d'emballage. Depuis notre création, nous
+                    accompagnons les entreprises, entrepôts logistiques et industriels dans le choix et
+                    l'approvisionnement de leurs consommables d'emballage.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-semco-primary btn-lg">
+                        <i class="bi bi-grid-fill me-2"></i> Voir notre catalogue
+                    </a>
+                    <a asp-controller="Contact" asp-action="Index" class="btn btn-semco-orange btn-lg">
+                        <i class="bi bi-envelope-check me-2"></i> Nous contacter
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-wrapper">
+                    <img src="~/images/film-etirable.png"
+                         alt="Solutions d'emballage SEMCO"
+                         class="img-fluid" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="py-5 bg-white border-bottom border-top">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="about-stat-box">
+                    <div class="about-stat-number">@totalCategories</div>
+                    <div class="about-stat-label">Grandes catégories de produits</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-stat-box">
+                    <div class="about-stat-number" style="color:var(--semco-orange)">@totalProducts+</div>
+                    <div class="about-stat-label">Références professionnelles</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-stat-box">
+                    <div class="about-stat-number" style="color:#16a34a">24/48h</div>
+                    <div class="about-stat-label">Disponibilité stock garantie</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Notre mission -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <img src="~/images/machine.png"
+                     alt="Machine d'emballage SEMCO"
+                     class="img-fluid rounded-4 shadow" />
+            </div>
+            <div class="col-lg-6">
+                <span class="section-tag"><i class="bi bi-bullseye me-1"></i> Notre mission</span>
+                <h2 class="section-title mt-3">Un seul interlocuteur pour tous vos besoins d'emballage</h2>
+                <p class="section-desc mt-3">
+                    Chez SEMCO, nous croyons qu'un emballage bien choisi, c'est une logistique optimisée,
+                    des produits mieux protégés et des coûts maîtrisés. C'est pourquoi nous sélectionnons
+                    rigoureusement chaque référence de notre catalogue pour garantir performance industrielle
+                    et rapport qualité-prix optimal.
+                </p>
+                <p class="section-desc">
+                    Notre équipe de conseillers techniques est à votre disposition pour analyser vos
+                    cadences, vos contraintes de poids et de format, et vous recommander la solution
+                    la plus adaptée — qu'il s'agisse d'un film étirable standard, d'un ruban adhésif
+                    technique haute résistance, ou d'une banderoleuse semi-automatique.
+                </p>
+                <ul class="list-unstyled mt-4 d-flex flex-column gap-2">
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Conseil personnalisé par des experts emballage</li>
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Livraison rapide 24/48h sur stock disponible</li>
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Fabrications spéciales et impression sur-mesure</li>
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Tarifs dégressifs dès la première commande</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nos valeurs -->
+<section class="py-5 bg-white border-top">
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <span class="section-tag"><i class="bi bi-stars me-1"></i> Nos engagements</span>
+            <h2 class="section-title mt-2">Ce qui nous distingue</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-blue">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Qualité Industrielle</h4>
+                    <p class="text-muted mb-0">
+                        Tous nos films, rubans adhésifs et sacs répondent aux normes les plus exigeantes
+                        de résistance mécanique, d'étanchéité et de protection des marchandises.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-green">
+                        <i class="bi bi-recycle"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Engagement Éco-Responsable</h4>
+                    <p class="text-muted mb-0">
+                        Large choix de films allégés haute performance, papiers kraft recyclables et
+                        solutions d'emballages biodégradables pour réduire votre empreinte carbone.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper feature-icon-orange">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h4 class="fw-bold fs-5 mb-2">Conseil & Réactivité</h4>
+                    <p class="text-muted mb-0">
+                        Nos experts analysent vos cadences et vous conseillent le matériel et le
+                        consommable parfaitement dimensionné pour votre activité.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gamme de produits -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <span class="section-tag"><i class="bi bi-grid me-1"></i> Notre gamme</span>
+            <h2 class="section-title mt-2">Nos familles de produits</h2>
+            <p class="section-desc">Une sélection complète pour couvrir tous vos besoins d'emballage professionnel.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 bg-white rounded-3 shadow-sm h-100 border">
+                    <img src="~/images/film-etirable.png" alt="Film étirable" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                    <div>
+                        <h5 class="fw-bold mb-1">Films Étirables</h5>
+                        <p class="text-muted small mb-0">Films étirables manuels, machines, mini-bobines et films à bulles pour palettisation et protection de vos colis.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 bg-white rounded-3 shadow-sm h-100 border">
+                    <img src="~/images/scotch.png" alt="Rubans adhésifs" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                    <div>
+                        <h5 class="fw-bold mb-1">Rubans Adhésifs</h5>
+                        <p class="text-muted small mb-0">Rubans d'emballage transparents, colorés, kraft et techniques pour la fermeture et le marquage de vos colis.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 bg-white rounded-3 shadow-sm h-100 border">
+                    <img src="~/images/etiquette.png" alt="Étiquettes" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                    <div>
+                        <h5 class="fw-bold mb-1">Étiquettes & Signalétique</h5>
+                        <p class="text-muted small mb-0">Étiquettes logistiques, rouleaux, planches et étiquettes de signalétique pour l'identification et le traçage de vos produits.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 bg-white rounded-3 shadow-sm h-100 border">
+                    <img src="~/images/machine.png" alt="Machines" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                    <div>
+                        <h5 class="fw-bold mb-1">Machines d'Emballage</h5>
+                        <p class="text-muted small mb-0">Banderoleuses, scelleuses thermiques, dérouleurs et machines à filmer pour automatiser votre conditionnement.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 bg-white rounded-3 shadow-sm h-100 border">
+                    <img src="~/images/sac.png" alt="Sacs kraft" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                    <div>
+                        <h5 class="fw-bold mb-1">Sacs Kraft & Pochettes</h5>
+                        <p class="text-muted small mb-0">Sacs en papier kraft, pochettes à bulles, enveloppes et solutions d'expédition écologiques et résistantes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-start gap-3 p-4 rounded-3 h-100 border" style="background: linear-gradient(135deg,#eef3fb,#fff7ed)">
+                    <div class="feature-icon-wrapper feature-icon-orange" style="flex-shrink:0">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Sur-mesure & Impression</h5>
+                        <p class="text-muted small mb-0">Fabrications spéciales aux dimensions souhaitées, impression logo et texte sur rubans, sacs et films selon votre cahier des charges.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA final -->
+<section class="py-5 bg-white border-top">
+    <div class="container text-center py-3">
+        <span class="section-tag"><i class="bi bi-chat-dots me-1"></i> Parlons de votre projet</span>
+        <h2 class="section-title mt-3 mb-3">Vous avez un besoin spécifique ?</h2>
+        <p class="section-desc mb-5">
+            Notre équipe commerciale vous répond sous 24h. Devis gratuit, sans engagement.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a asp-controller="Contact" asp-action="Index" class="btn btn-semco-primary btn-lg">
+                <i class="bi bi-envelope-fill me-2"></i> Demander un devis gratuit
+            </a>
+            <a href="https://wa.me/33123456789" target="_blank" class="btn btn-whatsapp btn-lg">
+                <i class="bi bi-whatsapp me-2"></i> WhatsApp direct
+            </a>
+            <a asp-controller="Products" asp-action="Index" class="btn btn-semco-outline btn-lg">
+                <i class="bi bi-grid me-2"></i> Voir le catalogue
+            </a>
+        </div>
+    </div>
+</section>

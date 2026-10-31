@@ -1,31 +1,39 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using SiteWeb.Application.Interfaces;
 using SiteWeb.Application.Mappings;
+using SiteWeb.Application.Services;
+using SiteWeb.Infrastructure;
 using SiteWeb.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ✅ Add MVC
 builder.Services.AddControllersWithViews();
 
-// ✅ Enregistrer le DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// ✅ Référencer le projet Infrastructure dans SiteWeb.csproj aussi
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
+// ✅ AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+// ✅ Infrastructure services (DbContext, Identity, Repositories, FileStorageService)
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// ✅ Application services
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+
 var app = builder.Build();
+
+// ✅ Auto-apply pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -34,6 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
